@@ -20,6 +20,7 @@ internal class Program
         appBuilder.Services.AddWindowsFormsBlazorWebView();
         appBuilder.Services.AddBlazorWebViewDeveloperTools();
         appBuilder.Services.AddSingleton<WeatherForecastService>();
+        appBuilder.Services.AddSingleton<AvaloniaFilePickerService>();
         using var myApp = appBuilder.Build();
 
         myApp.Start();
