@@ -1,9 +1,5 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
-using DemoApp.Data;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace DemoApp;
 
@@ -15,34 +11,14 @@ internal class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        var appBuilder = Host.CreateApplicationBuilder(args);
-        appBuilder.Logging.AddDebug();
-        appBuilder.Services.AddWindowsFormsBlazorWebView();
-        appBuilder.Services.AddBlazorWebViewDeveloperTools();
-        appBuilder.Services.AddSingleton<WeatherForecastService>();
-        appBuilder.Services.AddSingleton<AvaloniaFilePickerService>();
-        using var myApp = appBuilder.Build();
-
-        myApp.Start();
-
-        try
-        {
-            BuildAvaloniaApp(myApp.Services)
-                .StartWithClassicDesktopLifetime(args);
-        }
-        finally
-        {
-            Task.Run(async () => await myApp.StopAsync()).Wait();
-        }
+        App.RunAvaloniaAppWithHosting(args, BuildAvaloniaApp);
     }
 
-    private static AppBuilder BuildAvaloniaApp(IServiceProvider serviceProvider)
-        => AppBuilder.Configure<App>(() => new App(serviceProvider))
+    // Avalonia configuration, don't remove; also used by visual designer.
+    private static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .LogToTrace()
             //.UseManagedSystemDialogs()
             .UseReactiveUI();
-
-    // Avalonia configuration, don't remove; also used by visual designer.
-    public static AppBuilder BuildAvaloniaApp() => BuildAvaloniaApp(null!);
 }

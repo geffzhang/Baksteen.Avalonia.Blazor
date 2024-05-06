@@ -10,13 +10,12 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
     public MainWindow()
     {
-        var services = (Avalonia.Application.Current as App)?.Services;
         var rootComponents = new RootComponentsCollection()
         {
             new RootComponent("#app", typeof(DemoApp.Main), null)
         };
 
-        Resources.Add("services", services);
+        Resources.Add("services", App.AppHost!.Services);
         Resources.Add("rootComponents", rootComponents);
 
         InitializeComponent();
